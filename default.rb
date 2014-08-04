@@ -79,7 +79,7 @@ get '/:projects/:api_key' do
       end
 
       begin
-        @created_stories += Story.count_stories_from_xml(Nokogiri::HTML(created_since(@start_date, project, params[:api_key])))
+        @created_stories += Story.count_stories_from_xml(created_since(@start_date, project, params[:api_key]))
         @improved = (@created_stories < @stories.count)
       rescue
       end

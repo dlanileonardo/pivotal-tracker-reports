@@ -57,7 +57,16 @@
       %th
     - for story in @current_stories.sort{|a,b| Story.status_sort(a,b)}
       %tr
-        %td.state #{story.friendly_state.capitalize}
+        %td.state
+          - if story.friendly_state == "accepted"
+            %span.glyphicon.glyphicon-ok.green
+          - elsif story.friendly_state == "delivered"
+            %span.glyphicon.glyphicon-thumbs-up.yellow
+          - elsif story.friendly_state == "finished"
+            %span.glyphicon.glyphicon-time.yellow
+          - elsif story.friendly_state == "rejected"
+            %span.glyphicon.glyphicon-remove.red
+          / #{story.friendly_state.capitalize}
         %td.owner #{story.owned_by(@owners)}
         %td.center #{story.estimate}
         %td

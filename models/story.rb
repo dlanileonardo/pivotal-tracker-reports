@@ -43,8 +43,8 @@ class Story
     end
   end
 
-  def self.count_stories_from_xml(xml_doc)
-    return xml_doc.xpath('//stories')[0].attribute('count').value.to_i
+  def self.count_stories_from_xml(stories)
+    return stories.size
   end
 
   #handy for turning labels into something more human readable
