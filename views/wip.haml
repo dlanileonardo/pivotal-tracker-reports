@@ -1,0 +1,30 @@
+%h1{:class=>'title'}
+  Work in Progress
+
+%table.work.table.table-condensed.table-bordered.table-hover.table-striped
+  %thead
+    %tr
+      %td{:colspan=>4}
+        %h3
+          %span.text-info Current:
+          #{@current_stories.count} stories, #{@current_points} points
+          %small
+            - for label in Story.top_labels(@current_stories)
+              %span
+                =Story.human_format(label[0])
+                %strong
+                  =label[1].to_s+"%"
+    %tr
+      %th Status
+      %th Owner
+      %th Points
+      %th
+    - for story in @current_stories.sort{|a,b| Story.status_sort(a,b)}
+      %tr
+        %td.state
+          %span.glyphicon.glyphicon-tower.green
+        %td.owner #{story.owned_by(@owners)}
+        %td.center #{story.estimate}
+        %td
+          %span{:title=>"last updated: #{story.updated_at.strftime("%b %d")}"}
+          #{friendly_title(story)}

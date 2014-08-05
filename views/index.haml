@@ -39,18 +39,18 @@
           %span.text-info #{@upcoming_stories.count} Upcoming Stories
           %small
             %span.state
+              %span{:class => ''}= @upcoming_story_counts['accepted']
               %span.text-success
-                %strong #{@upcoming_story_counts['accepted']}
-              Accepted (Works),
+                Accepted (Works)
+              %span{:class => ''}= @upcoming_story_counts['delivered']
               %span.text-warning
-                %strong #{@upcoming_story_counts['delivered']}
-              Delivered (Test),
+                Delivered (Test)
+              %span{:class => ''}= @upcoming_story_counts['finished']
               %span.text-warning
-                %strong #{@upcoming_story_counts['finished']}
-              Finished (Code Complete),
+                Finished (Code Complete)
+              %span{:class => ''}= @upcoming_story_counts['rejected']
               %span.text-danger
-                %strong #{@upcoming_story_counts['rejected']}
-              Rejected (Bugs).
+                Rejected (Bugs)
   - for story in @upcoming_stories
     %tr
       %td.center
@@ -58,7 +58,7 @@
         - if story.friendly_state == "accepted"
           %span.glyphicon.glyphicon-ok.green
         - elsif story.friendly_state == "delivered"
-          %span.glyphicon.glyphicon-thumbs-up.yellow
+          %span.glyphicon.glyphicon-send.yellow
         - elsif story.friendly_state == "finished"
           %span.glyphicon.glyphicon-time.yellow
         - elsif story.friendly_state == "rejected"

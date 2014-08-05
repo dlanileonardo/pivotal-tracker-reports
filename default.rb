@@ -8,11 +8,13 @@ require 'uri'
 require 'cgi'
 require 'require_relative'
 require 'json'
+require 'gravatarify'
 require_relative 'models/story.rb'
 require_relative 'models/owner_work.rb'
 require_relative 'models/member.rb'
 require_relative 'lib/helper.rb'
 require 'date' #this is mac-specific, which doesn't require the standard libs.
+helpers Gravatarify::Helper
 
 before do
   @days_ago = params[:days_ago].to_i
@@ -108,7 +110,6 @@ get '/:projects/:api_key' do
 end
 
 get '/status/:projects/:api_key' do
-
   include_icebox = (params[:icebox] != 'false')
   include_done = (params[:done] != 'false')
   include_backlog = (params[:backlog] != 'false')
@@ -189,6 +190,45 @@ get '/status/:projects/:api_key' do
   haml :status
 end
 
+get '/wip/:projects/:api_key' do
+  include_icebox = (params[:icebox] != 'false')
+  include_done = (params[:done] != 'false')
+  include_backlog = (params[:backlog] != 'false')
+
+  @done_stories = Array.new
+  @done_points = 0
+
+  @current_stories = Array.new
+  @current_points = 0
+  @next_up_stories = Array.new
+  @next_points = 0
+  @recently_delivered_by_owner = Hash.new
+
+  @recently_logged_stories = Array.new
+  @backlog_stories = Array.new
+  @icebox = Array.new
+
+  # Used to weed stories out of the list to-be prioritized because
+  # we know they're already on the schedule.
+  @scheduled_story_ids = Set.new
+
+  params[:projects].split(',').uniq.each do |project|
+    @owners = owners(project, params[:api_key])
+
+    #Get the upcoming work
+    begin
+      stories = stories(project, params[:api_key], 'state:started')
+      stories.each do |story|
+        story = Story.new.from_xml(story)
+        @current_stories << story
+        @current_points += story.estimate
+      end
+    end
+  end
+
+  haml :wip
+end
+
 # Epics
 get '/epics/:projects/:api_key' do
 
@@ -233,7 +273,7 @@ get '/team/:group/:projects/:api_key' do
   @members = Hash.new(0)
   params[:projects].split(',').uniq.each { |project|
 
-    burl = "/services/v3/projects/#{project}"
+    burl = "/services/v5/projects/#{project}"
     url = burl + "/memberships"
     doc = pt_get_body(url, params[:api_key])
     doc.xpath('//memberships//membership').each { |member_xml|

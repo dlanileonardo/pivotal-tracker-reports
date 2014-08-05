@@ -13,11 +13,13 @@
             %li
               %a{:href=>"/#{params[:projects]}/#{params[:api_key]}", :title=>"Show activity from #{@start_date} to now"} Last Week
             %li
+              %a{:href=>"/wip/#{params[:projects]}/#{params[:api_key]}", :title=>"Show activity from #{@start_date} to now"} WIP
+            %li
               %a{:href=>"/status/#{params[:projects]}/#{params[:api_key]}"} Status
             / %li
-            /   %a{:href=>"/epics/#{params[:projects]}/#{params[:api_key]}"} Epics
+            / %a{:href=>"/epics/#{params[:projects]}/#{params[:api_key]}"} Epics
             / %li
-            /   %a{:href=>"/team/all/#{params[:projects]}/#{params[:api_key]}"} Team
+            / %a{:href=>"/team/all/#{params[:projects]}/#{params[:api_key]}"} Team
     %div.container
       =yield
   %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
