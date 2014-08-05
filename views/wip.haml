@@ -14,17 +14,17 @@
                 =Story.human_format(label[0])
                 %strong
                   =label[1].to_s+"%"
+  %tr
+    %th Status
+    %th Owner
+    %th Points
+    %th
+  - for story in @current_stories.sort{|a,b| Story.status_sort(a,b)}
     %tr
-      %th Status
-      %th Owner
-      %th Points
-      %th
-    - for story in @current_stories.sort{|a,b| Story.status_sort(a,b)}
-      %tr
-        %td.state
-          %span.glyphicon.glyphicon-tower.green
-        %td.owner #{story.owned_by(@owners)}
-        %td.center #{story.estimate}
-        %td
-          %span{:title=>"last updated: #{story.updated_at.strftime("%b %d")}"}
-          #{friendly_title(story)}
+      %td.center
+        %span.glyphicon.glyphicon-tower.green.center
+      %td.owner #{story.owned_by(@owners)}
+      %td.center #{story.estimate}
+      %td
+        %span{:title=>"last updated: #{story.updated_at.strftime("%b %d")}"}
+        #{friendly_title(story)}
