@@ -8,13 +8,11 @@ require 'uri'
 require 'cgi'
 require 'require_relative'
 require 'json'
-require 'gravatarify'
 require_relative 'models/story.rb'
 require_relative 'models/owner_work.rb'
 require_relative 'models/member.rb'
 require_relative 'lib/helper.rb'
 require 'date' #this is mac-specific, which doesn't require the standard libs.
-helpers Gravatarify::Helper
 
 before do
   @days_ago = params[:days_ago].to_i
