@@ -73,3 +73,5 @@
           #{story.owned_by(@owners)} -
           %b Requested by:
           #{story.requested_by(@owners)} on #{story.created_at.strftime("%b %d")}
+          %b Last Updated on:
+          #{story.updated_at.strftime("%b %d")}
